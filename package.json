@@ -1,0 +1,14 @@
+{
+  "name": "sketch-ping-pong",
+  "scripts": {
+    "dev": "vite"
+  },
+  "packageManager": "pnpm@10.8.0",
+  "type": "module",
+  "devDependencies": {
+    "vite": "^7.0.5"
+  },
+  "dependencies": {
+    "p5": "1.11.9"
+  }
+}
