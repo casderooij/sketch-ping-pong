@@ -2,13 +2,42 @@ import P5 from 'p5';
 
 /**
  * @param {P5} p
+ * @param {{x: number, y: number}} position
+ * @param {number} angle
+ * @param {number} radius
+ * @returns {{x: number, y: number}}
+ */
+function createHandle(p, position, angle, radius) {
+  return {
+    x: position.x + p.sin(angle) * radius,
+    y: position.y + p.cos(angle) * radius,
+  };
+}
+
+/**
+ *
+ * @param {P5} p
+ * @param {[number, number, number, number][]} handles
+ */
+function renderBezierDebug(p, handles) {
+  p.stroke('red');
+  for (const [originX, originY, handleX, handleY] of handles) {
+    p.strokeWeight(10);
+    p.point(handleX, handleY);
+    p.strokeWeight(1);
+    p.line(originX, originY, handleX, handleY);
+  }
+}
+
+/**
+ * @param {P5} p
  * @param {{x: number, y: number}} start
  * @param {{x: number, y: number}} end
  * @param {boolean} debug
  */
 function drawBall(p, start, end, debug = false) {
-  const handle1 = { x: start.x + 40, y: start.y - 40 };
-  const handle2 = { x: end.x + 40, y: end.y - 40 };
+  const handle1 = createHandle(p, start, 1, 50);
+  const handle2 = createHandle(p, end, 2, 100);
 
   p.bezier(
     start.x,
@@ -22,10 +51,10 @@ function drawBall(p, start, end, debug = false) {
   );
 
   if (debug) {
-    p.stroke('red');
-    p.strokeWeight(10);
-    p.point(handle1.x, handle1.y);
-    p.point(handle2.x, handle2.y);
+    renderBezierDebug(p, [
+      [start.x, start.y, handle1.x, handle1.y],
+      [end.x, end.y, handle2.x, handle2.y],
+    ]);
   }
 
   p.stroke('black');
